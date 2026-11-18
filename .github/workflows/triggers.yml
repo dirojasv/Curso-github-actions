@@ -1,0 +1,25 @@
+name: EnsayoTriggers
+run-name: TriggersEnsayo
+on:
+  push:
+    branches:
+      - 'aprendiendo-github-actions'
+    paths:
+      - '**.py'
+  pull_request:
+    types: 'opened'
+    branches:
+      - 'main'
+  schedule:
+    - cron: '5 18 19 11 *'  
+      timezone: 'America/Bogota'
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    steps:
+    - name: clonarRepo
+      uses: actions/checkout@v3
+    - name: nombreUser
+      run: echo "USERNAME=${{ github.actor }}" >> $GITHUB_ENV
+    - name: printPython
+      run: python -c 'print("Hola, hay modificaión en arhcivo .py o nueva PR a bracnh main")'
