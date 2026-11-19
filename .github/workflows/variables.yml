@@ -1,0 +1,31 @@
+name: variablesEntorno
+run-name: varsEnsayo
+on:
+  workflow_dispatch:
+    inputs:
+      nombre:
+        description: "Tu nombre (escribe 'USER' para gitUser)"
+        type: string
+        required: true
+      lenguaje:
+        description: "Selecciona leguaje de programación"
+        type: choice
+        options:
+          - Python
+          - Otro
+        required: true
+jobs:
+  holaMundoUserDefault:
+    runs-on: ubuntu-latest
+    env:
+    #Asigna el nombre que se va a imprimir
+      USERNAME: ${{ inputs.nombre == 'USER' && github.actor || inputs.nombre }}
+      ENSAYOVARIABLE: ${{ vars.ENSAYOVARIABLE }}
+    
+    steps:
+      - name: printEcho
+        if: ${{ inputs.lenguaje != 'Python'}}
+        run: echo "Hola $USERNAME, ejecutado desde terminal con echo con variable repositorio $ENSAYOVARIABLE"
+      - name: printPython
+        if: ${{ inputs.lenguaje == 'Python'}}
+        run: python -c 'import os; print("Hola " + os.environ["USERNAME"] + ", desde Python y con variable repositorio " + os.environ["ENSAYOVARIABLE"])'
